@@ -6,15 +6,18 @@ require("awful.rules")
 require("beautiful")
 -- Notification library
 require("naughty")
+-- Monitoring widgets library
 require("vicious")
+-- Dynamic tag library
 require("shifty")
---require("mail-simple")
 --require("freedesktop.utils")
+
+
 -- {{{ Variable definitions
+
 -- Themes define colours, icons, and wallpapers
 --beautiful.init("/usr/share/awesome/themes/sky/theme.lua")
 beautiful.init("/home/shtsh/.config/awesome/themes/strict/theme.lua")
---beautiful.init("themes/dwm/dwm.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm"
@@ -25,7 +28,6 @@ browser = "chromium"
 
 --freedesktop.utils.terminal = terminal
 --require("freedesktop.menu")
-
 --menu_items = freedesktop.menu.new()
 
 -- COLORS
@@ -69,9 +71,6 @@ layouts =
 
 -- shifty: predefined tags
 shifty.config.tags = {
-	
-	-- screen 1	
-	
 	["term"]		= { init = true, position = 1, screen = 1, layout = awful.layout.suit.fair						 },
 	["web"]			= { position = 2, screen = 1, layout = awful.layout.suit.fair, mwfact = 0.6, spawn = browser	 },
 	["im"]			= { position = 3, screen = 1, layout = awful.layout.suit.tile.left, mwfact = 0.3	             },
@@ -83,7 +82,6 @@ shifty.config.tags = {
 	["office"]		= { position = 9, screen = 1, layout = awful.layout.suit.tile.bottom                 			 },
 }
 
---ws mail"                                 }, tag = "mail",                                                                           },                                
 --shifty: tags matching and client rules
 shifty.config.apps = {
 	{ match = { "Namoroka", "Chromium", "Opera", "Firefox"       },	tag = "web", float = false,															},
@@ -92,7 +90,6 @@ shifty.config.apps = {
 	{ match = { "Thunderbird"									 }, tag = "mail",																		},
 	{ match = { "Claws Mail"								 }, tag = "mail",																		},
 	{ match = { "^buddy_list"									 }, slave = false,																		},
---	{ match = { "Skype™ (Beta)"									 }, slave = false,																		},
 	{ match = { "LibreOffice", "OpenOffice.org 3.2"       		 }, tag = "office",																		}, 
 	{ match = { "Gimp"											 }, tag = "gimp",																		},
 	{ match = { "gimp%-image%-window"							 }, geometry = {175,15,930,770}, border_width = 0										},
@@ -176,15 +173,15 @@ vicious.register(memwidget, vicious.widgets.mem,
 			if args[1] >= 60 and args[1] < 85 then
 				return "" .. color_blue .. "<b>" .. args[1] .. "</b>% " .. color_default .. ""
 			elseif args[1] >= 85 then
-				--naughty.notify({ title = "Memory Warning", 
-						 --text = args[1] .. "% Occupied!", 
-						 --timeout = 10 })
 				return "" .. color_red .. "<b>" .. args[1] .. "</b>% " .. color_default .. ""
 			else 	return "<b>" .. args[1] .. "</b>% "
 			end
 		 end, 13)
 
-memwidget:buttons(awful.util.table.join(awful.button({}, 1, function () awful.util.spawn ( terminal .. " -e htop") end ) ) )
+-- Run htop on click
+		 memwidget:buttons(awful.util.table.join(awful.button({}, 1, function () awful.util.spawn ( terminal .. " -e htop") end ) ) )
+
+-- don't works with --sort-key (seems bug)
 --memwidget:buttons(awful.util.table.join(awful.button({}, 1, function () awful.util.spawn ( terminal .. " -e htop --sort-key PERCENT_MEM") end ) ) )
 -- }}}
 
@@ -201,6 +198,8 @@ cputwidget = widget({ type = "textbox" })
 			return " <b>" .. args[1] .. "</b>% / "
 		end
 	end )
+
+-- run htop on click
 cputwidget:buttons(awful.util.table.join(awful.button({}, 1, function () awful.util.spawn ( terminal .. " -e htop") end ) ) )
 --cputwidget:buttons(awful.util.table.join(awful.button({}, 1, function () awful.util.spawn ( terminal .. " -e htop --sort-key PERCENT_CPU") end ) ) )
 
@@ -208,6 +207,10 @@ cputwidget:buttons(awful.util.table.join(awful.button({}, 1, function () awful.u
 -- }}}
 
 -- {{{ Battery 
+-- Format: 
+--		   +percent time_min:time_sec when charging.
+--		   time_min:time_sec (percent) on battery
+--		   ↯ when charged
 
 batwidget = widget({ type = "textbox" })
 	vicious.register(batwidget, vicious.widgets.bat,
@@ -228,12 +231,13 @@ batwidget = widget({ type = "textbox" })
 	end,
 	60,
 	"BAT0")
---battwidget:buttons(awful.util.table.join(awful.button({}, 1, function () awful.util.spawn ( terminal .. " -e htop --sort-key PERCENT_CPU") end ) ) )
-
 
 -- }}}
 
 --{{{ Volume
+-- Format:
+--		  ♫percent when unmuted
+--		  ♩ when muted
 
 volwidget = widget({type = "textbox"})
 	vicious.register( volwidget,
@@ -353,16 +357,18 @@ root.buttons(awful.util.table.join(
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
 
-
-    awful.key({}, "Print", function () awful.util.spawn("scrot") end ),
-    awful.key({modkeyctrl,	}, "Print", function () awful.util.spawn("scrot -s") end ),
+-- PreentScreen with scrot
+    awful.key({					  }, "Print", function () awful.util.spawn("scrot") end ),
+    awful.key({modkeyctrl,		  }, "Print", function () awful.util.spawn("scrot -s") end ),
     --awful.key({}, "XF86AudioMute", function () awful.util.spawn("amixer set Master toggle &") end  ),
     --awful.key({}, "XF86AudioRaiseVolume", function () awful.util.spawn("amixer set Master 5%+ &") end ),
     --awful.key({}, "XF86AudioLowerVolume", function () awful.util.spawn("amixer set Master 5%- &") end ),
-    awful.key({}, "XF86AudioPrev", function () awful.util.spawn("deadbeef --prev &") end ),
-    awful.key({}, "XF86AudioNext", function () awful.util.spawn("deadbeef --next &") end ),
-    awful.key({}, "XF86AudioPlay", function () awful.util.spawn("deadbeef --pause &") end ),
-    awful.key({}, "XF86AudioStop", function () awful.util.spawn("deadbeef --stop &") end ),
+
+-- Deadbeef audio player control with multimedia keys
+    awful.key({					  }, "XF86AudioPrev", function () awful.util.spawn("deadbeef --prev &") end ),
+    awful.key({					  }, "XF86AudioNext", function () awful.util.spawn("deadbeef --next &") end ),
+    awful.key({					  }, "XF86AudioPlay", function () awful.util.spawn("deadbeef --pause &") end ),
+    awful.key({					  }, "XF86AudioStop", function () awful.util.spawn("deadbeef --stop &") end ),
     
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
@@ -370,7 +376,9 @@ globalkeys = awful.util.table.join(
 	
     awful.key({ modkey, "Shift"   }, "Left",                shifty.shift_prev        ),
     awful.key({ modkey, "Shift"   }, "Right",                 shifty.shift_next        ),
-    awful.key({ modkey            }, "a",                    function() shifty.add({ rel_index = 1 , name = "tmp-Work"}) end ),
+    
+-- add temporary "tmp-Work" tag	
+	awful.key({ modkey            }, "a",                    function() shifty.add({ rel_index = 1 , name = "tmp-Work"}) end ),
     awful.key({ modkey, "Shift"   }, "a",                    function() shifty.add({ rel_index = 1, nopopup = true, name = "tmp-Work" }) end ),
     awful.key({ modkey            }, "z",                    shifty.del ),
 
