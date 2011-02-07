@@ -1,0 +1,19 @@
+My awesome config for laptop.
+
+Uses:
+	theme:strict
+	vicious
+	shifty
+	awful (*)
+	beautiful (*)
+	naughty (*)
+
+(*) - default libraries
+
+Widgets:
+	clock + date
+	volume
+	system tray
+	battery remaining time
+	memory using
+	CPU using
