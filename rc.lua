@@ -1,5 +1,4 @@
--- Standard awesome library
-require("awful")
+-- Standard awesome library require("awful")
 require("awful.autofocus")
 require("awful.rules")
 -- Theme handling library
@@ -84,7 +83,7 @@ shifty.config.tags = {
 
 --shifty: tags matching and client rules
 shifty.config.apps = {
-	{ match = { "Namoroka", "Chromium", "Opera", "Firefox"       },	tag = "web", float = false,															},
+	{ match = { "luakit", "Chromium", "Opera", "Firefox"       },	tag = "web", float = false,															},
 	{ match = { "Pidgin" 								 }, tag = "im",																			},
 	{ match = {  "Skype"										 }, tag = "skype",																		},
 	{ match = { "Thunderbird"									 }, tag = "mail",																		},
@@ -215,6 +214,12 @@ cputwidget:buttons(awful.util.table.join(awful.button({}, 1, function () awful.u
 batwidget = widget({ type = "textbox" })
 	vicious.register(batwidget, vicious.widgets.bat,
 	function (widget, args)
+
+	-- s2disk when low battery charge	
+		if args[2] < 2 and args[1] == "-" then awful.util.spawn("sudo s2disk")	end
+
+	-- different widget appearance
+	--
 		if args[1] == "-" then args[1] = "" end	
 		
 		if  args[2] < 30 and args[2] >= 15 and args[1] == "" then
@@ -536,7 +541,7 @@ end
 os.execute("pgrep -u $USER -x cl-launch-session || (ck-launch-session &)")
 os.execute("pgrep -u $USER -x pidgin || (pidgin &)")
 os.execute("pgrep -u $USER -x thunderbird|| (thunderbird &)")
-os.execute("pgrep -u $USER -x deadbeef || (DISPLAY=:0.1 deadbeef &)")
+os.execute("pgrep -u $USER -x deadbeef || (deadbeef &)")
 os.execute("pgrep -u $USER -x skype || (skype &)")
 --os.execute("pgrep -u $USER -x ossxmix || (ossxmix -b &)")
 --os.execute("pgrep -u $USER -x chromium || (chromium &)")
