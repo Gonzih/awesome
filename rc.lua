@@ -12,11 +12,19 @@ require("shifty")
 --require("freedesktop.utils")
 
 
+
 -- {{{ Variable definitions
 
 -- Themes define colours, icons, and wallpapers
 --beautiful.init("/usr/share/awesome/themes/sky/theme.lua")
 beautiful.init("/home/shtsh/.config/awesome/themes/strict/theme.lua")
+
+-- {{{ Naughty config
+naughty.config.default_preset.position         =	"bottom_right"
+naughty.config.default_preset.bg               =    '#dddddd'
+naughty.config.default_preset.fg               =    '#000000'
+naughty.config.default_preset.font             =	"Droid Sans 10"
+-- }}}
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm"
