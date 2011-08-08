@@ -24,7 +24,8 @@ naughty.config.default_preset.font             =  "Droid Sans 10"
 -- }}}
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm"
+--terminal = "xterm"
+terminal = "gnome-terminal"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 --browser = "firefox"
@@ -79,7 +80,6 @@ shifty.config.tags = {
   ["work"]    = { init = true, position = 1, screen = 1, layout = awful.layout.suit.fair                     },
   ["web"]     = { position = 2, screen = 1, layout = awful.layout.suit.fair, mwfact = 0.6, spawn = browser, max_clients = 2  },
   ["im"]      = { position = 3, screen = 1, layout = awful.layout.suit.tile.left, mwfact = 0.3                 },
-  ["skype"]   = { position = 4, screen = 1, layout = awful.layout.suit.fair                          },
   ["mail"]    = { position = 5, screen = 1, layout = awful.layout.suit.fullscreen , max_clients = 1                      },
   ["picture"]   = { position = 6, screen = 1, layout = awful.layout.suit.max, max_clients = 1                            },
   ["music"]   = { position = 10, screen = 1, layout = awful.layout.suit.tile.bottom, max_clientst = 1                        },
@@ -94,7 +94,7 @@ shifty.config.apps = {
   { match = { "luakit", "Chromium", "Opera", "Firefox"     }, tag = "web", float = false,                             },
   { match = { "Pidgin"                     }, tag = "im",                                     },
   { match = { "Wine"                       }, tag = "wine",                                   },
-  { match = {  "Skype"                     }, tag = "skype",                                    },
+  { match = {  "Skype"                     }, tag = "im",                                    },
   { match = {  "CoolReader", "Apvlv"               }, tag = "read",                                   },
   { match = { "Thunderbird"                  }, tag = "mail",                                   },
   { match = { "Claws Mail"                   }, tag = "mail",                                   },
@@ -134,7 +134,6 @@ shifty.init()
 
 programsmenu = {
   { "pidgin", 'pidgin' },
-  { "skype", 'skype' },
   { browser, browser },
   { "deadbeef", "deadbeef" },
   { "xchat", "xchat" },
