@@ -615,6 +615,9 @@ run_once("deadbeef")
 run_once("dropboxd")
 os.execute("pgrep -u $USER -x nm-applet || (nm-applet --sm-disable  &)")
 os.execute("pgrep -u $USER -x bluetooth-applet || (bluetooth-applet &)")
+os.execute("syndaemon -t -k -i 2 -d &") -- disable touchpad while typing
+os.execute("setxkbmap us dvp")
+os.execute("xscreensaver -nosplash")
 
 --os.execute("pgrep -u $USER -x pidgin || (pidgin &)")
 --os.execute("pgrep -u $USER -x skype || (skype &)")
