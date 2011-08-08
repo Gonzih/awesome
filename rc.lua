@@ -14,7 +14,7 @@ require("shifty")
 -- {{{ Variable definitions
 
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/usr/share/awesome/themes/strict/theme.lua")
+beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- {{{ Naughty config
 naughty.config.default_preset.position         =  "bottom_right"
