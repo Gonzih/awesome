@@ -1,1 +1,0 @@
-/home/gnzh/.config/awesome/rc.lua.netbook
