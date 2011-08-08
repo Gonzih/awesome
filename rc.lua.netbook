@@ -77,7 +77,7 @@ layouts =
 
 -- shifty: predefined tags
 shifty.config.tags = {
-  ["work"]    = { init = true, position = 1, screen = 1, layout = awful.layout.suit.fair                     },
+  ["dev"]    = { init = true, position = 1, screen = 1, layout = awful.layout.suit.fair                     },
   ["web"]     = { position = 2, screen = 1, layout = awful.layout.suit.fair, mwfact = 0.6, spawn = browser, max_clients = 2  },
   ["im"]      = { position = 3, screen = 1, layout = awful.layout.suit.tile.left, mwfact = 0.3                 },
   ["mail"]    = { position = 5, screen = 1, layout = awful.layout.suit.fullscreen , max_clients = 1                      },
