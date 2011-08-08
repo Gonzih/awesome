@@ -1,3 +1,4 @@
 # Undo files
 *.old
 *un~
+rc.lua
