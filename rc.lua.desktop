@@ -12,7 +12,7 @@ require("naughty")
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm"
+terminal = "gnome-terminal"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -75,6 +75,29 @@ mytextclock = awful.widget.textclock({ align = "right" })
 -- Create a systray
 mysystray = widget({ type = "systray" })
 
+-- {{{ Keyboard Layouts
+-- Keyboard map indicator and changer
+    kbdcfg = {}
+    kbdcfg.cmd = "setxkbmap"
+    kbdcfg.layout = awful.widget.layout.horizontal.rightleft
+    kbdcfg.layouts = { { "us", "dvp" }, { "ru", "" } }
+    kbdcfg.layouts_count = 2
+    kbdcfg.current = 1  -- us is our default layouts
+    kbdcfg.widget = widget({ type = "textbox", align = "right" })
+    kbdcfg.widget.text = " " .. kbdcfg.layouts[kbdcfg.current][1] .. " "
+    kbdcfg.switch = function ()
+       kbdcfg.current = kbdcfg.current % kbdcfg.layouts_count + 1
+       local t = kbdcfg.layouts[kbdcfg.current]
+       kbdcfg.widget.text = " " .. t[1] .. " "
+       os.execute( kbdcfg.cmd .. " " .. t[1] .. " " .. t[2] )
+    end
+
+-- Mouse bindings
+    kbdcfg.widget:buttons(awful.util.table.join(
+        awful.button({ }, 1, function () kbdcfg.switch() end)
+    ))
+
+-- }}}
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
@@ -151,6 +174,7 @@ for s = 1, screen.count() do
         },
         mylayoutbox[s],
         mytextclock,
+        kbdcfg,
         s == 1 and mysystray or nil,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
@@ -171,6 +195,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
+    awful.key({ "Mod1" }, "Shift_L", function () kbdcfg.switch() end),
 
     awful.key({ modkey,           }, "j",
         function ()
