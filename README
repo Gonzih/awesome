@@ -1,9 +1,9 @@
 My awesome config for laptop.
 
 Uses:
-	theme:strict
-	vicious
-	shifty
+	theme:strict http://aur.archlinux.org/packages.php?ID=37861
+	vicious http://aur.archlinux.org/packages.php?ID=29646
+	shifty http://aur.archlinux.org/packages.php?ID=32463
 	awful (*)
 	beautiful (*)
 	naughty (*)
