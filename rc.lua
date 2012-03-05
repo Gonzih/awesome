@@ -115,7 +115,7 @@ shifty.config.apps = {
   { match = { "CoolReader", "Apvlv"                                     }, tag = "read",               },
   { match = { "Thunderbird"                                             }, tag = "mail",               },
   { match = { "Claws Mail"                                              }, tag = "mail",               },
-  { match = { "LibreOffice", "OpenOffice.org 3.2"                       }, tag = "office",             },
+  { match = { "..LibreOffice...", "OpenOffice.org 3.2"                  }, tag = "office",             },
   { match = { "Gimp"                                                    }, tag = "gimp",               },
   { match = { "XChat"                                                   }, tag = "irc",                },
   { match = { "ncmpcpp", "Deadbeef", "Amarok", "Clementine"             }, tag = "music",              },
