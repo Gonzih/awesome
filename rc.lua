@@ -89,7 +89,7 @@ end
 -- {{{ Shifty
 --shifty: predefined tags
 shifty.config.tags = {
-  ["term"]    = { position = 1, screen  = 1, layout = awful.layout.suit.fair,           init         = true            },
+  ["dev"]     = { position = 1, screen  = 1, layout = awful.layout.suit.fair,           init         = true            },
   ["web"]     = { position = 2, screen  = 1, layout = awful.layout.suit.fair,           max_clients  = 1, mwfact = 0.6 },
   ["im"]      = { position = 3, screen  = 1, layout = awful.layout.suit.tile.left,      mwfact       = 0.3             },
   ["mail"]    = { position = 5, screen  = 1, layout = awful.layout.suit.fullscreen ,    max_clients  = 1               },
@@ -102,45 +102,46 @@ shifty.config.tags = {
 }
 
 --shifty: tags matching and client rules
---shifty.config.apps = {
-  --{ match = { "luakit", "Chromium", "Opera", "Firefox"         }, tag = "web", float = false, },
-  --{ match = { "Pidgin"                                         }, tag = "im",                 },
-  --{ match = { "Wine"                                           }, tag = "wine",               },
-  --{ match = {  "Skype"                                         }, tag = "im",                 },
-  --{ match = {  "CoolReader", "Apvlv"                           }, tag = "read",               },
-  --{ match = { "Thunderbird"                                    }, tag = "mail",               },
-  --{ match = { "Claws Mail"                                     }, tag = "mail",               },
-  --{ match = { "LibreOffice", "OpenOffice.org 3.2"              }, tag = "office",             },
-  --{ match = { "Gimp"                                           }, tag = "gimp",               },
-  --{ match = { "XChat"                                          }, tag = "irc",                },
-  --{ match = { "ncmpcpp", "Deadbeef", "Amarok", "Clementine"    }, tag = "music",              },
-  --{ match = { "rtorrent" , "Deluge", "Transmission"            }, tag = "torrent",            },
-  --{ match = { "GQview", "Geeqie", "Simple Viewer GL", "Xnview" }, tag = "picture",            },
+shifty.config.apps = {
+  { match = { "luakit", "Chromium", "Opera", "Firefox"         }, tag = "web", float = false, },
+  { match = { "Pidgin"                                         }, tag = "im",                 },
+  { match = { "Wine"                                           }, tag = "wine",               },
+  { match = { "Skype"                                          }, tag = "im",                 },
+  { match = { "CoolReader", "Apvlv"                            }, tag = "read",               },
+  { match = { "Thunderbird"                                    }, tag = "mail",               },
+  { match = { "Claws Mail"                                     }, tag = "mail",               },
+  { match = { "LibreOffice", "OpenOffice.org 3.2"              }, tag = "office",             },
+  { match = { "Gimp"                                           }, tag = "gimp",               },
+  { match = { "XChat"                                          }, tag = "irc",                },
+  { match = { "ncmpcpp", "Deadbeef", "Amarok", "Clementine"    }, tag = "music",              },
+  { match = { "rtorrent" , "Deluge", "Transmission"            }, tag = "torrent",            },
+  { match = { "GQview", "Geeqie", "Simple Viewer GL", "Xnview" }, tag = "picture",            },
 
-  --{ match = { "buddy_list" }, slave = true,                             },
-  --{ match = { "SMPlayer"   }, float = true, ontop = true, sticky = true },
+  { match = { "buddy_list" }, slave = true,                             },
+  { match = { "SMPlayer"   }, float = true, ontop = true, sticky = true },
 
-  --{ match = { "^MPlayer"            }, geometry = {0,15,nil,nil    }, float = true, sticky=true, ontop=true        },
-  --{ match = { "gimp%-image%-window" }, geometry = {231,20,905,750  }, border_width = 0                             },
-  --{ match = { "^gimp%-toolbox$"     }, geometry = {0,20,230,750    }, slave = true, border_width = 1, ontop = true },
-  --{ match = { "^gimp%-dock$"        }, geometry = {1136,20,230,760 }, slave = true, border_width = 1, ontop = true },
+  { match = { "^MPlayer"            }, geometry = {0,15,nil,nil    }, float = true, sticky=true, ontop=true        },
+  { match = { "gimp%-image%-window" }, geometry = {231,20,905,750  }, border_width = 0                             },
+  { match = { "^gimp%-toolbox$"     }, geometry = {0,20,230,750    }, slave = true, border_width = 1, ontop = true },
+  { match = { "^gimp%-dock$"        }, geometry = {1136,20,230,760 }, slave = true, border_width = 1, ontop = true },
 
   --client manipulation
-  --{ match = { "" },
-  --honorsizehints = false,
-  --buttons = awful.util.table.join (
-  --awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
-  --awful.button({ modkey }, 1, awful.mouse.client.move),
-  --awful.button({ modkey }, 3, awful.mouse.client.resize))
---},
---}
+  {
+          match = { "" },
+          honorsizehints = false,
+          buttons = awful.util.table.join (
+          awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
+          awful.button({ modkey }, 1, awful.mouse.client.move),
+          awful.button({ modkey }, 3, awful.mouse.client.resize))
+  },
+}
 
 --shifty: defaults
---shifty.config.defaults = {
-  --layout = awful.layout.suit.max,
---}
---shifty.config.layouts = layouts
---shifty.init()
+shifty.config.defaults = {
+  layout = awful.layout.suit.max,
+}
+shifty.config.layouts = layouts
+shifty.init()
 
 -- }}}
 
