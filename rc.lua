@@ -82,40 +82,45 @@ layouts =
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    tags[s] = awful.tag({ 1, 2, 3 }, s, layouts[1])
 end
 -- }}}
 
 -- {{{ Shifty
 --shifty: predefined tags
+screen_1 = 1
+screen_2 = math.max(screen.count(), 2)
+
 shifty.config.tags = {
-  ["dev"]     = { position = 1, screen  = 1, layout = awful.layout.suit.fair,           init         = true            },
-  ["web"]     = { position = 2, screen  = 1, layout = awful.layout.suit.fair,           max_clients  = 1, mwfact = 0.6 },
-  ["im"]      = { position = 3, screen  = 1, layout = awful.layout.suit.tile.left,      mwfact       = 0.3             },
-  ["mail"]    = { position = 5, screen  = 1, layout = awful.layout.suit.fullscreen ,    max_clients  = 1               },
-  ["picture"] = { position = 6, screen  = 1, layout = awful.layout.suit.max,            max_clients  = 1               },
-  ["wine"]    = { position = 7, screen  = 1, layout = awful.layout.suit.max.fullscreen, exclusive    = true            },
-  ["read"]    = { position = 8, screen  = 1, layout = awful.layout.suit.fullscreen,     max_clients  = 1               },
-  ["office"]  = { position = 9, screen  = 1, layout = awful.layout.suit.tile.bottom,    max_clients  = 1               },
-  ["music"]   = { position = 10, screen = 1, layout = awful.layout.suit.tile.bottom,    max_clientst = 1               },
-  ["irc"]     = { position = 0, screen  = 1, layout = awful.layout.suit.fullscreen,     max_clients  = 1               },
+  ["dev"]     = { position = 1, screen  = screen_2, layout = awful.layout.suit.fair,           init         = true            },
+  ["web"]     = { position = 2, screen  = screen_2, layout = awful.layout.suit.fair,           max_clients  = 1, mwfact = 0.6 },
+  ["im"]      = { position = 3, screen  = screen_1, layout = awful.layout.suit.tile.left,      mwfact       = 0.3             },
+  ["skype"]   = { position = 4, screen  = screen_1, layout = awful.layout.suit.tile.left,      mwfact       = 0.3             },
+  ["mail"]    = { position = 5, screen  = screen_1, layout = awful.layout.suit.fullscreen ,    max_clients  = 1               },
+  ["picture"] = { position = 6, screen  = screen_1, layout = awful.layout.suit.max,            max_clients  = 1               },
+  ["wine"]    = { position = 7, screen  = screen_2, layout = awful.layout.suit.max.fullscreen, exclusive    = true            },
+  ["read"]    = { position = 8, screen  = screen_2, layout = awful.layout.suit.fullscreen,     max_clients  = 1               },
+  ["office"]  = { position = 9, screen  = screen_2, layout = awful.layout.suit.tile.bottom,    max_clients  = 1               },
+  ["irc"]     = { position = 0, screen  = screen_1, layout = awful.layout.suit.fullscreen,     max_clients  = 1               },
+  ["music"]   = { position = 10, screen = screen_1, layout = awful.layout.suit.tile.bottom,    max_clientst = 1               },
+  ["torrent"] = { position = 11, screen = screen_1, layout = awful.layout.suit.tile.bottom,    max_clientst = 1               }
 }
 
 --shifty: tags matching and client rules
 shifty.config.apps = {
-  { match = { "luakit", "Chromium", "Opera", "Firefox"         }, tag = "web", float = false, },
-  { match = { "Pidgin"                                         }, tag = "im",                 },
-  { match = { "Wine"                                           }, tag = "wine",               },
-  { match = { "Skype"                                          }, tag = "im",                 },
-  { match = { "CoolReader", "Apvlv"                            }, tag = "read",               },
-  { match = { "Thunderbird"                                    }, tag = "mail",               },
-  { match = { "Claws Mail"                                     }, tag = "mail",               },
-  { match = { "LibreOffice", "OpenOffice.org 3.2"              }, tag = "office",             },
-  { match = { "Gimp"                                           }, tag = "gimp",               },
-  { match = { "XChat"                                          }, tag = "irc",                },
-  { match = { "ncmpcpp", "Deadbeef", "Amarok", "Clementine"    }, tag = "music",              },
-  { match = { "rtorrent" , "Deluge", "Transmission"            }, tag = "torrent",            },
-  { match = { "GQview", "Geeqie", "Simple Viewer GL", "Xnview" }, tag = "picture",            },
+  { match = { "luakit", "Chromium", "Opera", "Firefox", "Google Chrome" }, tag = "web", float = false, },
+  { match = { "Pidgin", "Empathy", "Chat"                               }, tag = "im",                 },
+  { match = { "Wine"                                                    }, tag = "wine",               },
+  { match = { "Skype"                                                   }, tag = "skype",              },
+  { match = { "CoolReader", "Apvlv"                                     }, tag = "read",               },
+  { match = { "Thunderbird"                                             }, tag = "mail",               },
+  { match = { "Claws Mail"                                              }, tag = "mail",               },
+  { match = { "LibreOffice", "OpenOffice.org 3.2"                       }, tag = "office",             },
+  { match = { "Gimp"                                                    }, tag = "gimp",               },
+  { match = { "XChat"                                                   }, tag = "irc",                },
+  { match = { "ncmpcpp", "Deadbeef", "Amarok", "Clementine"             }, tag = "music",              },
+  { match = { "rtorrent" , "Deluge", "Transmission"                     }, tag = "torrent",            },
+  { match = { "GQview", "Geeqie", "Simple Viewer GL", "Xnview"          }, tag = "picture",            },
 
   { match = { "buddy_list" }, slave = true,                             },
   { match = { "SMPlayer"   }, float = true, ontop = true, sticky = true },
