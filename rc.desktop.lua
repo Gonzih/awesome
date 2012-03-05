@@ -153,86 +153,255 @@ mytextclock = awful.widget.textclock({ align = "right" })
 -- Create a systray
 mysystray = widget({ type = "systray" })
 
+-- {{{ Memory usage
+
+-- Initialize widget
+memwidget = widget({ type = "textbox" })
+-- Register widget
+vicious.register(memwidget, vicious.widgets.mem, 
+function (widget, args)
+  if args[1] >= 60 and args[1] < 85 then
+    return "" .. color_blue .. "<b>" .. args[1] .. "</b>%" .. color_default .. ""
+  elseif args[1] >= 85 then
+    return "" .. color_red .. "<b>" .. args[1] .. "</b>%" .. color_default .. ""
+  else  return  "<b>" .. args[1] .. "</b>%"
+  end
+end, 13)
+
+-- Run htop on click
+memwidget:buttons(awful.util.table.join(awful.button({}, 1, function () awful.util.spawn ( terminal .. " -e htop") end ) ) )
+
+-- don't works with --sort-key (seems bug)
+--memwidget:buttons(awful.util.table.join(awful.button({}, 1, function () awful.util.spawn ( terminal .. " -e htop --sort-key PERCENT_MEM") end ) ) )
+-- }}}
+
+-- {{{ CPU Usage 
+
+cputwidget = widget({ type = "textbox" })
+vicious.register(cputwidget, vicious.widgets.cpu,
+function (widget, args)
+  if  args[1] >= 60 and args[1] < 80 then
+    return "" .. color_blue .. "<b>" ..  args[1] .. "</b>%" .. color_default .. ""
+  elseif args[1] >= 80 then
+    return "" .. color_red .. "<b>" .. args[1] .. "</b>%" .. color_default .. ""
+  else
+    return "<b>" .. args[1] .. "</b>%"
+  end
+end )
+
+-- run htop on click
+cputwidget:buttons(awful.util.table.join(awful.button({}, 1, function () awful.util.spawn ( terminal .. " -e htop") end ) ) )
+--cputwidget:buttons(awful.util.table.join(awful.button({}, 1, function () awful.util.spawn ( terminal .. " -e htop --sort-key PERCENT_CPU") end ) ) )
+
+
+-- }}}
+
+-- {{{ Battery 
+-- Format: 
+--       +percent time_min:time_sec when charging.
+--       time_min:time_sec (percent) on battery
+--       ↯ when charged
+
+batwidget = widget({ type = "textbox" })
+vicious.register(batwidget, vicious.widgets.bat,
+function (widget, args)
+
+  -- s2disk when low battery charge 
+  if args[2] < 2 and args[1] == "-" then awful.util.spawn("sudo hibernate") end
+
+  -- different widget appearance
+  --
+  b_dis = "▼ "
+  b_cha = "▲ "
+
+
+  if  args[2] < 30 and args[2] >= 15 and args[1] == "-" then
+    return "" .. color_blue .. "<b>" .. b_dis ..  args[2] .. "</b>% <b>" ..args[3] .. "</b>"  .. color_default .. ""
+  elseif args[2] < 15 and args[1] == "-" then
+    return "" .. color_red .. "<b>" .. b_dis.. args[2] .. "</b>% <b>" .. args[3] .. "</b>" .. color_default .. ""
+  elseif args[1] == "-" then
+    return "<b>" .. b_dis .. args[2].. "</b>% (<b>" .. args[3] .. "</b>)"
+  elseif args[1] == "+" then
+    return "" .. b_cha .. "<b>" .. args[2] .. "</b>%"
+  else
+    return "<b>" .. args[1] .. "</b>"
+  end
+end,
+60,
+"BAT0")
+
+-- }}}
+
+--{{{ Volume
+-- Format:
+
+volwidget = widget({type = "textbox", name = "volwidget"})
+
+--function volume(command,widget)
+  --if command == "update" then
+    --local fd = io.popen("amixer sget Master")
+    --local status = fd:read("*all")
+    --fd:close()
+
+    --local volume = tonumber(string.match(status, "(%d?%d?%d)%%"))
+
+    --if (string.find(status, "off", 1, true)) then
+      --ret = "" .. color_white .. "<b>Muted</b>" .. color_default .. ""
+      --volwidget.bg = beautiful.fg_normal
+    --else
+      --ret = "♫ <b>" .. volume .. "</b>"
+      --volwidget.bg = beautiful.fg_focus
+    --end
+    --widget.text = ret
+  --elseif command == "raise" then
+    --awful.util.spawn("amixer set Master 5%+ &")
+    --volume("update",volwidget)
+  --elseif command == "lower" then
+    --awful.util.spawn("amixer set Master 5%- &")
+    --volume("update",volwidget)
+  --elseif command == "toggle" then
+    --awful.util.spawn("amixer set Master toggle &")
+    --volume("update",volwidget)
+  --end
+--end
+--volume("update",volwidget)
+
+-- Autorefresh every 2 minutes
+awful.hooks.timer.register(120, function () volume("update", volwidget) end)
+
+-- Alsamixer on click
+volwidget:buttons(awful.util.table.join(awful.button({}, 1, function () awful.util.spawn ( terminal .. " -e alsamixer") end ) ) )
+--volwidget:buttons(awful.util.table.join(awful.button({}, 3, function () awful.util.spawn ( "amixer set Master toggle") end ) ) )
+
+--}}}
+
+-- {{{ Weather
+-- TODO Make weather widget
+
+-- }}}
+--
+
+-- {{{ Keyboard Layouts
+-- Keyboard map indicator and changer
+    kbdcfg = {}
+    kbdcfg.cmd = "setxkbmap"
+    kbdcfg.layout = awful.widget.layout.horizontal.rightleft
+    kbdcfg.layouts = { { "us", "dvp" }, { "ru", "" } }
+    kbdcfg.layouts_count = 2
+    kbdcfg.current = 1  -- us is our default layouts
+    kbdcfg.widget = widget({ type = "textbox", align = "right" })
+    kbdcfg.widget.text = " " .. kbdcfg.layouts[kbdcfg.current][1] .. " "
+    kbdcfg.switch = function ()
+       kbdcfg.current = kbdcfg.current % kbdcfg.layouts_count + 1
+       local t = kbdcfg.layouts[kbdcfg.current]
+       kbdcfg.widget.text = " " .. t[1] .. " "
+       os.execute( kbdcfg.cmd .. " " .. t[1] .. " " .. t[2] )
+    end
+
+-- Mouse bindings
+    kbdcfg.widget:buttons(awful.util.table.join(
+        awful.button({ }, 1, function () kbdcfg.switch() end)
+    ))
+
+-- }}}
+
+
+dummyw = widget ({type = "textbox" })
+dummyw.text = "  "
+dummyw1 = widget ({type = "textbox" })
+dummyw1.text = " "
+divider = widget ({type = "textbox" })
+divider.text = " | "
+
 -- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
 mylayoutbox = {}
 mytaglist = {}
 mytaglist.buttons = awful.util.table.join(
-                    awful.button({ }, 1, awful.tag.viewonly),
-                    awful.button({ modkey }, 1, awful.client.movetotag),
-                    awful.button({ }, 3, awful.tag.viewtoggle),
-                    awful.button({ modkey }, 3, awful.client.toggletag),
-                    awful.button({ }, 4, awful.tag.viewnext),
-                    awful.button({ }, 5, awful.tag.viewprev)
+                      awful.button({ }, 1, awful.tag.viewonly), 
+                      awful.button({ modkey }, 1, awful.client.movetotag),
+                      awful.button({ }, 3, awful.tag.viewtoggle),
+                      awful.button({ modkey }, 3, awful.client.toggletag),
+                      awful.button({ }, 4, awful.tag.viewnext),
+                      awful.button({ }, 5, awful.tag.viewprev)
                     )
+
+shifty.taglist = mytaglist
+
 mytasklist = {}
 mytasklist.buttons = awful.util.table.join(
-                     awful.button({ }, 1, function (c)
-                                              if c == client.focus then
-                                                  c.minimized = true
-                                              else
-                                                  if not c:isvisible() then
-                                                      awful.tag.viewonly(c:tags()[1])
-                                                  end
-                                                  -- This will also un-minimize
-                                                  -- the client, if needed
-                                                  client.focus = c
-                                                  c:raise()
-                                              end
-                                          end),
-                     awful.button({ }, 3, function ()
-                                              if instance then
-                                                  instance:hide()
-                                                  instance = nil
-                                              else
-                                                  instance = awful.menu.clients({ width=250 })
-                                              end
-                                          end),
-                     awful.button({ }, 4, function ()
-                                              awful.client.focus.byidx(1)
-                                              if client.focus then client.focus:raise() end
-                                          end),
-                     awful.button({ }, 5, function ()
-                                              awful.client.focus.byidx(-1)
-                                              if client.focus then client.focus:raise() end
-                                          end))
+awful.button({ }, 1, function (c)
+  if not c:isvisible() then
+    awful.tag.viewonly(c:tags()[1])
+  end
+  client.focus = c
+  c:raise()
+end),
+awful.button({ }, 3, function ()
+  if instance then
+    instance:hide()
+    instance = nil
+  else
+    instance = awful.menu.clients({ width=250 })
+  end
+end),
+awful.button({ }, 4, function ()
+  awful.client.focus.byidx(1)
+  if client.focus then client.focus:raise() end
+end),
+awful.button({ }, 5, function ()
+  awful.client.focus.byidx(-1)
+  if client.focus then client.focus:raise() end
+end))
 
 for s = 1, screen.count() do
-    -- Create a promptbox for each screen
-    mypromptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
-    -- Create an imagebox widget which will contains an icon indicating which layout we're using.
-    -- We need one layoutbox per screen.
-    mylayoutbox[s] = awful.widget.layoutbox(s)
-    mylayoutbox[s]:buttons(awful.util.table.join(
-                           awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
-                           awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
-                           awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
-                           awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
-    -- Create a taglist widget
-    mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, mytaglist.buttons)
+  -- Create a promptbox for each screen
+  mypromptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
+  -- Create an imagebox widget which will contains an icon indicating which layout we're using.
+  -- We need one layoutbox per screen.
+  mylayoutbox[s] = awful.widget.layoutbox(s)
+  mylayoutbox[s]:buttons(awful.util.table.join(
+  awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
+  awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
+  awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
+  awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
+  -- Create a taglist widget
+  mytaglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, mytaglist.buttons)
 
-    -- Create a tasklist widget
-    mytasklist[s] = awful.widget.tasklist(function(c)
-                                              return awful.widget.tasklist.label.currenttags(c, s)
-                                          end, mytasklist.buttons)
+  -- Create a tasklist widget
+  mytasklist[s] = awful.widget.tasklist(function(c)
+    return awful.widget.tasklist.label.currenttags(c, s)
+  end, mytasklist.buttons)
 
-    -- Create the wibox
-    mywibox[s] = awful.wibox({ position = "top", screen = s })
-    -- Add widgets to the wibox - order matters
-    mywibox[s].widgets = {
-        {
-            mylauncher,
-            mytaglist[s],
-            mypromptbox[s],
-            layout = awful.widget.layout.horizontal.leftright
-        },
-        mylayoutbox[s],
-        mytextclock,
-        s == 1 and mysystray or nil,
-        mytasklist[s],
-        layout = awful.widget.layout.horizontal.rightleft
-    }
+  -- Create the wibox
+  mywibox[s] = awful.wibox({ position = "top", screen = s })
+
+  -- Add widgets to the wibox - order matters
+  mywibox[s].widgets = {
+    { mylauncher,
+      mytaglist[s],
+      mypromptbox[s],
+      layout = awful.widget.layout.horizontal.leftright
+    },
+  mylayoutbox[s],
+  mytextclock,
+  dummyw1,
+  kbdcfg,
+  dummyw,
+  volwidget,
+  dummyw,
+  mysystray,
+  dummyw,
+  batwidget,
+  divider,
+  memwidget,
+  divider,
+  cputwidget,
+  dummyw,
+  mytasklist[s],
+  layout = awful.widget.layout.horizontal.rightleft
+}
 end
 -- }}}
 
