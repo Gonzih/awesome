@@ -86,6 +86,7 @@ for s = 1, screen.count() do
 end
 -- }}}
 
+-- {{{ Shifty
 --shifty: predefined tags
 --shifty.config.tags = {
   --["dev"]    = { init = true, position = 1, screen = 1, layout = awful.layout.suit.fair                     },
@@ -140,6 +141,8 @@ end
 --}
 --shifty.config.layouts = layouts
 --shifty.init()
+
+-- }}}
 
 
 -- {{{ Menu
