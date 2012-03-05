@@ -88,18 +88,18 @@ end
 
 -- {{{ Shifty
 --shifty: predefined tags
---shifty.config.tags = {
-  --["dev"]    = { init = true, position = 1, screen = 1, layout = awful.layout.suit.fair                     },
-  --["web"]     = { position = 2, screen = 1, layout = awful.layout.suit.fair, mwfact = 0.6, spawn = browser, max_clients = 2  },
-  --["im"]      = { position = 3, screen = 1, layout = awful.layout.suit.tile.left, mwfact = 0.3                 },
-  --["mail"]    = { position = 5, screen = 1, layout = awful.layout.suit.fullscreen , max_clients = 1                      },
-  --["picture"]   = { position = 6, screen = 1, layout = awful.layout.suit.max, max_clients = 1                            },
-  --["music"]   = { position = 10, screen = 1, layout = awful.layout.suit.tile.bottom, max_clientst = 1                        },
-  --["wine"]    = { position = 7, screen = 1, layout = awful.layout.suit.max.fullscreen, exclusive = true                        },
-  --["office"]    = { position = 9, screen = 1, layout = awful.layout.suit.tile.bottom, max_clients = 1                        },
-  --["read"]    = { position = 8, screen = 1, layout = awful.layout.suit.fullscreen, max_clients = 1                       },
-  --["irc"]     = { position = 0, screen = 1, layout = awful.layout.suit.fullscreen, max_clients = 1                       },
---}
+shifty.config.tags = {
+  ["term"]    = { position = 1, screen  = 1, layout = awful.layout.suit.fair,           init         = true            },
+  ["web"]     = { position = 2, screen  = 1, layout = awful.layout.suit.fair,           max_clients  = 1, mwfact = 0.6 },
+  ["im"]      = { position = 3, screen  = 1, layout = awful.layout.suit.tile.left,      mwfact       = 0.3             },
+  ["mail"]    = { position = 5, screen  = 1, layout = awful.layout.suit.fullscreen ,    max_clients  = 1               },
+  ["picture"] = { position = 6, screen  = 1, layout = awful.layout.suit.max,            max_clients  = 1               },
+  ["wine"]    = { position = 7, screen  = 1, layout = awful.layout.suit.max.fullscreen, exclusive    = true            },
+  ["read"]    = { position = 8, screen  = 1, layout = awful.layout.suit.fullscreen,     max_clients  = 1               },
+  ["office"]  = { position = 9, screen  = 1, layout = awful.layout.suit.tile.bottom,    max_clients  = 1               },
+  ["music"]   = { position = 10, screen = 1, layout = awful.layout.suit.tile.bottom,    max_clientst = 1               },
+  ["irc"]     = { position = 0, screen  = 1, layout = awful.layout.suit.fullscreen,     max_clients  = 1               },
+}
 
 --shifty: tags matching and client rules
 --shifty.config.apps = {
