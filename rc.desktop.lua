@@ -6,6 +6,8 @@ require("awful.rules")
 require("beautiful")
 -- Notification library
 require("naughty")
+-- Dynamic tag library
+require("shifty")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -51,33 +53,77 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 layouts =
 {
-    awful.layout.suit.floating,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    awful.layout.suit.fair.horizontal,
-    --awful.layout.suit.spiral,
-    --awful.layout.suit.spiral.dwindle,
-    awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier
+  --    awful.layout.suit.floating,
+  awful.layout.suit.tile,
+  awful.layout.suit.tile.left,
+  awful.layout.suit.tile.bottom,
+  awful.layout.suit.tile.top,
+  awful.layout.suit.max,
+  awful.layout.suit.fair,
+  awful.layout.suit.floating,
+  --    awful.layout.suit.fair.horizontal,
+  --    awful.layout.suit.spiral,
+  --    awful.layout.suit.spiral.dwindle,
+  --    awful.layout.suit.max,
+  --    awful.layout.suit.max.fullscreen,
+  --    awful.layout.suit.magnifier
 }
+
+
 -- }}}
 
- -- {{{ Tags
- -- Define a tag table which will hold all screen tags.
- tags = {
-   names  = { "main", "www", "im", "skype", 5, 6, 7, 8, 9 },
-   layout = { layouts[1], layouts[2], layouts[1], layouts[5], layouts[6],
-              layouts[12], layouts[9], layouts[3], layouts[7]
- }}
- for s = 1, screen.count() do
-     -- Each screen has its own tag table.
-     tags[s] = awful.tag(tags.names, s, tags.layout)
- end
- -- }}}
+-- shifty: predefined tags
+shifty.config.tags = {
+  ["dev"]    = { init = true, position = 1, screen = 1, layout = awful.layout.suit.fair                     },
+  ["web"]     = { position = 2, screen = 1, layout = awful.layout.suit.fair, mwfact = 0.6, spawn = browser, max_clients = 2  },
+  ["im"]      = { position = 3, screen = 1, layout = awful.layout.suit.tile.left, mwfact = 0.3                 },
+  ["mail"]    = { position = 5, screen = 1, layout = awful.layout.suit.fullscreen , max_clients = 1                      },
+  ["picture"]   = { position = 6, screen = 1, layout = awful.layout.suit.max, max_clients = 1                            },
+  ["music"]   = { position = 10, screen = 1, layout = awful.layout.suit.tile.bottom, max_clientst = 1                        },
+  ["wine"]    = { position = 7, screen = 1, layout = awful.layout.suit.max.fullscreen, exclusive = true                        },
+  ["office"]    = { position = 9, screen = 1, layout = awful.layout.suit.tile.bottom, max_clients = 1                        },
+  ["read"]    = { position = 8, screen = 1, layout = awful.layout.suit.fullscreen, max_clients = 1                       },
+  ["irc"]     = { position = 0, screen = 1, layout = awful.layout.suit.fullscreen, max_clients = 1                       },
+}
+
+--shifty: tags matching and client rules
+shifty.config.apps = {
+  { match = { "luakit", "Chromium", "Opera", "Firefox"     }, tag = "web", float = false,                             },
+  { match = { "Pidgin"                     }, tag = "im",                                     },
+  { match = { "Wine"                       }, tag = "wine",                                   },
+  { match = {  "Skype"                     }, tag = "im",                                    },
+  { match = {  "CoolReader", "Apvlv"               }, tag = "read",                                   },
+  { match = { "Thunderbird"                  }, tag = "mail",                                   },
+  { match = { "Claws Mail"                   }, tag = "mail",                                   },
+  { match = { "buddy_list"                   }, slave = true,                                   },
+  { match = { "LibreOffice", "OpenOffice.org 3.2"            }, tag = "office",                                   }, 
+  { match = { "Gimp"                       }, tag = "gimp",                                   },
+  { match = { "gimp%-image%-window"              }, geometry = {231,20,905,750}, border_width = 0                   },
+  { match = { "^gimp%-toolbox$"                }, geometry = {0,20,230,750}, slave = true, border_width = 1, ontop = true       },
+  { match = { "^gimp%-dock$"                   }, geometry = {1136,20,230,760}, slave = true, border_width = 1, ontop = true      },
+  { match = { "XChat"                      }, tag = "irc",                                    },
+  { match = { "^MPlayer"                     }, geometry = {0,15,nil,nil}, float = true, sticky=true, ontop=true                    },
+  { match = { "SMPlayer"                     }, float = true, ontop = true, sticky = true                     },
+  { match = { "ncmpcpp", "Deadbeef", "Amarok", "Clementine"  }, tag = "music",                                    },
+  { match = { "rtorrent" , "Deluge", "Transmission"      }, tag = "torrent",                                  },
+  { match = { "GQview", "Geeqie", "Simple Viewer GL", "Xnview" }, tag = "picture",                            },
+  -- client manipulation
+  { match = { "" },
+  honorsizehints = false,
+  buttons = awful.util.table.join (
+  awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
+  awful.button({ modkey }, 1, awful.mouse.client.move),
+  awful.button({ modkey }, 3, awful.mouse.client.resize))
+},
+}
+
+-- shifty: defaults
+shifty.config.defaults = {
+  layout = awful.layout.suit.max,
+}
+shifty.config.layouts = layouts
+shifty.init()
+
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
