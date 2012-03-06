@@ -309,6 +309,12 @@ cpuwidget = widget({ type = "textbox" })
 -- Register widget
 vicious.register(cpuwidget, vicious.widgets.cpu, "$1%")
 
+
+dummyw = widget ({type = "textbox" })
+dummyw.text = " "
+divider = widget ({type = "textbox" })
+divider.text = " | "
+
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
     mypromptbox[s] =
@@ -345,7 +351,10 @@ for s = 1, screen.count() do
         mylayoutbox[s],
         mytextclock,
         s == 1 and mysystray or nil,
+        dummyw,
+        divider,
         cpuwidget,
+        dummyw,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
         }
