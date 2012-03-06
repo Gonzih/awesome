@@ -26,8 +26,7 @@ beautiful.init(theme_path)
 -- This is used later as the default terminal and editor to run.
 browser = "firefox"
 mail = "thunderbird"
-term = "sakura"
-terminal = term .. "-e 'tmux'"
+terminal = "sakura"
 editor = os.getenv("EDITOR") or "gvim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -245,7 +244,7 @@ mytextclock = awful.widget.textclock({align = "right"})
 
 -- Create a laucher widget and a main menu
 myawesomemenu = {
-    {"manual", term .. " -e man awesome"},
+    {"manual", terminal .. " -e man awesome"},
     {"edit config",
      editor_cmd .. " " .. awful.util.getdir("config") .. "/rc.lua"},
     {"restart", awesome.restart},
