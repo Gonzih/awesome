@@ -7,6 +7,8 @@ require("beautiful")
 require("naughty")
 -- shifty - dynamic tagging library
 require("shifty")
+-- vicious - widgets
+require("vicious")
 
 -- useful for debugging, marks the beginning of rc.lua exec
 print("Entered rc.lua: " .. os.time())
@@ -253,6 +255,11 @@ mytasklist.buttons = awful.util.table.join(
         if client.focus then client.focus:raise() end
         end))
 
+-- CPU widget
+cpuwidget = widget({ type = "textbox" })
+-- Register widget
+vicious.register(cpuwidget, vicious.widgets.cpu, "$1%")
+
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
     mypromptbox[s] =
@@ -289,6 +296,7 @@ for s = 1, screen.count() do
         mylayoutbox[s],
         mytextclock,
         s == 1 and mysystray or nil,
+        cpuwidget,
         mytasklist[s],
         layout = awful.widget.layout.horizontal.rightleft
         }
