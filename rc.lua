@@ -57,40 +57,70 @@ layouts =
 use_titlebar = false
 
 -- Shifty configured tags.
+screen_1 = 1
+screen_2 = math.max(screen.count(), 2)
+
 shifty.config.tags = {
     main = {
         layout    = awful.layout.suit.max,
-        mwfact    = 0.60,
+        mwfact    = 0.50,
         exclusive = false,
         position  = 1,
         init      = true,
-        screen    = 1,
-        slave     = true,
+        screen    = screen_1,
+        slave     = true
+    },
+    im = {
+        layout    = awful.layout.suit.tile.left,
+        mwfact    = 0.30,
+        exclusive = true,
+        position  = 2,
+        screen    = screen_1,
+        slave     = true
+    },
+    skype = {
+        layout    = awful.layout.suit.tile.left,
+        mwfact    = 0.30,
+        exclusive = true,
+        position  = 3,
+        screen    = screen_1,
+        slave     = true
+    },
+    dev = {
+        layout    = awful.layout.suit.max,
+        mwfact    = 0.50,
+        exclusive = false,
+        position  = 1,
+        screen    = screen_2,
+        slave     = true
     },
     web = {
         layout      = awful.layout.suit.tile.bottom,
-        mwfact      = 0.65,
+        mwfact      = 0.7,
         exclusive   = true,
         max_clients = 1,
         position    = 4,
-        spawn       = browser,
+        screen      = screen_2
     },
     mail = {
         layout    = awful.layout.suit.tile,
-        mwfact    = 0.55,
+        mwfact    = 0.5,
         exclusive = false,
         position  = 5,
         spawn     = mail,
-        slave     = true
+        slave     = true,
+        screen    = screen_2
     },
     media = {
         layout    = awful.layout.suit.float,
         exclusive = false,
         position  = 8,
+        screen    = screen_2
     },
     office = {
         layout   = awful.layout.suit.tile,
         position = 9,
+        screen    = screen_2
     },
 }
 
@@ -107,6 +137,26 @@ shifty.config.apps = {
             "Google Chrome"
         },
         tag = "web",
+    },
+    {
+        match = {
+            "pidgin",
+            "empathy"
+        },
+        tag = "im",
+    },
+    {
+        match = {
+            "skype"
+        },
+        tag = "skype",
+    },
+    {
+        match = {
+            "gvim",
+            "vim",
+        },
+        tag = "dev",
     },
     {
         match = {
