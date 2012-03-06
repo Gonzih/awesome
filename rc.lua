@@ -309,6 +309,11 @@ cpuwidget = widget({ type = "textbox" })
 -- Register widget
 vicious.register(cpuwidget, vicious.widgets.cpu, "$1%")
 
+-- Memory widget
+memwidget = widget({ type = "textbox" })
+-- Register widget
+vicious.register(memwidget, vicious.widgets.mem, "$1% ($2MB/$3MB)", 13)
+
 
 dummyw = widget ({type = "textbox" })
 dummyw.text = " "
@@ -352,6 +357,8 @@ for s = 1, screen.count() do
         mytextclock,
         s == 1 and mysystray or nil,
         dummyw,
+        divider,
+        memwidget,
         divider,
         cpuwidget,
         dummyw,
