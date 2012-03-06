@@ -100,6 +100,9 @@ shifty.config.apps = {
             "Navigator",
             "Vimperator",
             "Gran Paradiso",
+            "Chromium",
+            "Firefox",
+            "Google Chrome"
         },
         tag = "web",
     },
@@ -119,6 +122,7 @@ shifty.config.apps = {
     },
     {
         match = {
+            "LibreOffice.*",
             "OpenOffice.*",
             "Abiword",
             "Gnumeric",
