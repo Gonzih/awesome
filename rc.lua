@@ -110,6 +110,13 @@ shifty.config.tags = {
         slave     = true,
         screen    = screen_2
     },
+    irc = {
+        layout    = awful.layout.suit.tile.bottom,
+        mwfact    = 0.7,
+        exclusive = true,
+        screen    = screen_1,
+        slave     = true
+    },
     media = {
         layout    = awful.layout.suit.float,
         exclusive = false,
@@ -143,6 +150,12 @@ shifty.config.apps = {
             "empathy"
         },
         tag = "im",
+    },
+    {
+        match = {
+            "xchat"
+        },
+        tag = "irc",
     },
     {
         match = {
