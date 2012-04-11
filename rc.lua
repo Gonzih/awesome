@@ -414,7 +414,7 @@ root.buttons(awful.util.table.join(
 -- Key bindings
 globalkeys = awful.util.table.join(
     -- Screenshot
-    awful.key({ }, "Print", function () awful.util.spawn("scrot -e 'mv $f /tmp/_shoot.png && ~/bin/upload /tmp/_shoot.png' 2>/dev/null") end),
+    awful.key({ }, "Print", function () awful.util.spawn("scrot -e '~/bin/upload $f' /tmp/shoot.png 2>/dev/null") end),
 
     -- Tags
     awful.key({modkey,}, "Left", awful.tag.viewprev),
