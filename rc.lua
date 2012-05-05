@@ -175,6 +175,7 @@ shifty.config.apps = {
             "Shredder.*",
             "Thunderbird",
             "mutt",
+            "Geary"
         },
         tag = "mail",
     },
