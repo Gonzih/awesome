@@ -128,6 +128,14 @@ shifty.config.tags = {
         position = 9,
         screen    = screen_2
     },
+    pdf = {
+        layout      = awful.layout.suit.tile.bottom,
+        mwfact      = 0.7,
+        exclusive   = true,
+        max_clients = 1,
+        position    = 4,
+        screen      = screen_2
+    }
 }
 
 -- SHIFTY: application matching rules
@@ -205,6 +213,12 @@ shifty.config.apps = {
         },
         tag = "media",
         nopopup = true,
+    },
+    {
+        match = {
+            "evince",
+        },
+        tag = "pdf"
     },
     {
         match = {
