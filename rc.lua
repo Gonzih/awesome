@@ -135,6 +135,14 @@ shifty.config.tags = {
         max_clients = 1,
         position    = 4,
         screen      = screen_2
+    },
+    games = {
+        layout      = awful.layout.suit.max.fullscreen,
+        mwfact      = 0.7,
+        exclusive   = true,
+        max_clients = 1,
+        position    = 4,
+        screen      = screen_2
     }
 }
 
@@ -219,6 +227,12 @@ shifty.config.apps = {
             "evince",
         },
         tag = "pdf"
+    },
+    {
+        match = {
+            "Minecraft"
+        },
+        tag = "games",
     },
     {
         match = {
