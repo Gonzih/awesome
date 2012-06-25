@@ -78,7 +78,7 @@ shifty.config.tags = {
         slave     = true
     },
     skype = {
-        layout    = awful.layout.suit.fair,
+        layout    = awful.layout.suit.max,
         mwfact    = 0.30,
         exclusive = true,
         position  = 3,
@@ -102,7 +102,7 @@ shifty.config.tags = {
         screen      = screen_2
     },
     mail = {
-        layout    = awful.layout.suit.tile,
+        layout    = awful.layout.suit.max,
         mwfact    = 0.5,
         exclusive = false,
         position  = 5,
