@@ -299,7 +299,8 @@ mymainmenu = awful.menu(
             {"hibernate", "sudo pm-hibernate"},
             {"awesome", myawesomemenu, beautiful.awesome_icon},
             {"open terminal", terminal},
-            {"reboot", "sudo reboot"}}
+            {"reboot", "sudo reboot"},
+            {"halt", "sudo halt"}}
           })
 
 mylauncher = awful.widget.launcher({image = image(beautiful.awesome_icon),
