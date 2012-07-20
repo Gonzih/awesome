@@ -296,10 +296,10 @@ myawesomemenu = {
 mymainmenu = awful.menu(
     {
         items = {
+            {"hibernate", "sudo pm-hibernate"},
             {"awesome", myawesomemenu, beautiful.awesome_icon},
             {"open terminal", terminal},
-            {"reboot", "sudo reboot"},
-            {"hibernate", "sudo pm-hibernate"}}
+            {"reboot", "sudo reboot"}}
           })
 
 mylauncher = awful.widget.launcher({image = image(beautiful.awesome_icon),
